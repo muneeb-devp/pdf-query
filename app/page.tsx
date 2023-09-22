@@ -1,17 +1,21 @@
+import Link from 'next/link'
+
 import { Button } from '@/components/ui/button'
 import { UserButton, auth } from '@clerk/nextjs'
-import Link from 'next/link'
+import { LogIn } from 'lucide-react'
 
 export default async function Home() {
   const { userId } = await auth()
   const isAuthenticated = !!userId
 
   return (
-    <main className='w-screen min-h-screen bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-amber-200 via-violet-600 to-sky-900'>
+    <main className='w-screen min-h-screen bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-rose-400 to-orange-300'>
       <section className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
         <div className='flex flex-col items-center text-center'>
           <div className='flex items-center'>
-            <h1 className='mr-3 text-5xl font-bold'>Query any PDF file</h1>
+            <h1 className='mr-3 text-5xl font-bold text-white opacity-90 '>
+              Query any PDF file
+            </h1>
             <UserButton afterSignOutUrl='/' />
           </div>
 
@@ -28,8 +32,10 @@ export default async function Home() {
             {isAuthenticated ? (
               <h1>File Upload Component</h1>
             ) : (
-              <Link href='/auth'>
-                <Button className='w-1/3'>Login to get started</Button>
+              <Link href='/sign-in'>
+                <Button className='w-1/3'>
+                  Login to get started <LogIn className='ml-2 w-4 h-4' />
+                </Button>
               </Link>
             )}
           </div>
