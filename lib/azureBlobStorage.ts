@@ -1,5 +1,4 @@
 import {
-  BlobClient,
   BlobServiceClient,
   BlockBlobUploadOptions,
   BlockBlobUploadResponse,

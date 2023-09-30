@@ -1,15 +1,32 @@
 'use client'
+import axios from 'axios'
 import React, { useState } from 'react'
-// import { blobServiceClient } from '../lib/azureBlobStorage'
-// import { uploadBlobToAzure } from '../lib/azureBlobStorage'
 import { Inbox, Loader2 } from 'lucide-react'
 import { useDropzone } from 'react-dropzone'
 import { UploadFileResponse, uploadFile } from '@/lib/azureBlobStorage'
+import { useMutation } from '@tanstack/react-query'
+import toast from 'react-hot-toast'
 
 type Props = {}
 
 const FileUpload = (props: Props) => {
   const [isUploading, setIsUploading] = useState(false)
+  const { mutate, isLoading, isError, isSuccess } = useMutation({
+    mutationFn: async ({
+      fileKey,
+      fileName,
+    }: {
+      fileKey: string | undefined
+      fileName: string | undefined
+    }) => {
+      const response = await axios.post('/api/create-chat', {
+        fileKey,
+        fileName,
+      })
+
+      return response.data
+    },
+  })
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: { 'application/pdf': ['.pdf'] },
@@ -19,15 +36,34 @@ const FileUpload = (props: Props) => {
       const file: File = files[0]
 
       if (!file) {
-        alert('Max allowed file size is 10mb.')
+        toast.error('File too large! Maximum allowed file size is 10Mb.')
         return
       }
 
       setIsUploading(true)
       const response: UploadFileResponse = await uploadFile(file)
 
-      if (response.status === 'ok') console.log('File uploaded', response)
-      else console.error(response.error)
+      if (response.status === 'ok') {
+        toast.success('File uploaded')
+        mutate(
+          {
+            fileKey: response.fileKey,
+            fileName: response.fileName,
+          },
+          {
+            onSuccess: data => {
+              console.log(data)
+              toast.success('Chat created')
+            },
+            onError: error => {
+              toast.error(`Error creating chat: ${error}`)
+            },
+          }
+        )
+        console.log('File uploaded', response)
+      } else {
+        toast.error(`Something went wrong! ${response.error}`)
+      }
       setIsUploading(false)
     },
   })
