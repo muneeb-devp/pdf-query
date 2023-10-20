@@ -1,16 +1,20 @@
 'use client'
 import axios from 'axios'
+import toast from 'react-hot-toast'
+
 import React, { useState } from 'react'
 import { Inbox, Loader2 } from 'lucide-react'
 import { useDropzone } from 'react-dropzone'
 import { UploadFileResponse, uploadFile } from '@/lib/azureBlobStorage'
 import { useMutation } from '@tanstack/react-query'
-import toast from 'react-hot-toast'
+import { useRouter } from 'next/navigation'
 
 type Props = {}
 
 const FileUpload = (props: Props) => {
   const [isUploading, setIsUploading] = useState(false)
+  const router = useRouter()
+
   const { mutate, isLoading, isError, isSuccess } = useMutation({
     mutationFn: async ({
       fileKey,
@@ -51,9 +55,9 @@ const FileUpload = (props: Props) => {
             fileName: response.fileName,
           },
           {
-            onSuccess: data => {
-              console.log(data)
+            onSuccess: ({ chatId }) => {
               toast.success('Chat created')
+              setTimeout(() => router.push(`/chat/${chatId}`), 5_000)
             },
             onError: error => {
               toast.error(`Error creating chat: ${error}`)
