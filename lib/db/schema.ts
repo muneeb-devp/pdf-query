@@ -22,6 +22,8 @@ export const messages = pgTable('messages', {
   role: userSystemEnum('role').notNull(),
 })
 
+export type DrizzleChat = typeof chats.$inferSelect
+
 // drizzle-kit provides utility functions e.g. migrations
 // To apply migrations, type in terminal
 //  bun drizzle-kit push:pg
