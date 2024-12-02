@@ -1,4 +1,4 @@
-import { PineconeClient } from '@pinecone-database/pinecone'
+import { Pinecone } from '@pinecone-database/pinecone'
 import { convertToASCII } from './utils'
 import { getEmbeddings } from './embeddings'
 
@@ -6,23 +6,15 @@ export async function getMatchesFromEmbeddings(
   embeddings: number[],
   fileKey: string
 ) {
-  const pinecone = new PineconeClient()
-  await pinecone.init({
-    apiKey: process.env.PINECONE_API_KEY!,
-    environment: process.env.PINECONE_ENV!,
-  })
-
+  const pinecone = new Pinecone({ apiKey: process.env.PINECONE_API_KEY! })
   const index = await pinecone.Index(process.env.PINECONE_INDEX!)
 
   try {
     const namespace = convertToASCII(fileKey)
-    const queryResult = await index.query({
-      queryRequest: {
-        topK: 5,
-        vector: embeddings,
-        includeMetadata: true,
-        namespace,
-      },
+    const queryResult = await index.namespace(namespace).query({
+      topK: 5,
+      vector: embeddings,
+      includeMetadata: true
     })
 
     return queryResult.matches || []
@@ -37,7 +29,7 @@ export async function getContext(query: string, fileKey: string) {
   const matches = await getMatchesFromEmbeddings(queryEmbeddings, fileKey)
 
   const qualifyingDocs = matches.filter(
-    match => match.score && match.score > 0.7
+    match => match.score && match.score > 0.1
   )
 
   type MetaData = {
