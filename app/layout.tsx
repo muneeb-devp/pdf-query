@@ -5,9 +5,6 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { ClerkProvider } from '@clerk/nextjs';
 import { Toaster } from 'react-hot-toast';
-import { data } from '@/lib/lemonsqueezy';
-
-console.log(data);
 
 const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
