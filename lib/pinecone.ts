@@ -78,7 +78,6 @@ export async function embedDocument(doc: Document): Promise<PineconeRecord> {
     } as PineconeRecord
   } catch (error) {
     console.error(error)
-    console.log('Error embedding the document')
     throw error
   }
 }

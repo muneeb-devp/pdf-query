@@ -15,9 +15,9 @@ lemonSqueezySetup({
 const { data, error } = await getAuthenticatedUser();
 
 if (error) {
-  console.log(error.message);
+  console.error(error.message);
 } else {
-  console.log(data);
+  console.error(data);
 }
 
 export const ENDPOINT = "https://api.lemonsqueezy.com/v1";

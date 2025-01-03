@@ -27,7 +27,6 @@ type Props = {
 };
 
 const ChatSideBar = ({ chats, chatId }: Props) => {
-  console.log(chats);
   return (
     <div className='w-full h-screen flex flex-col p-4 text-gray-200 bg-gray-900'>
       <Link href='/'>

@@ -1,54 +1,54 @@
-'use client'
-import axios from 'axios'
-import toast from 'react-hot-toast'
+'use client';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
-import React, { useState } from 'react'
-import { Inbox, Loader2 } from 'lucide-react'
-import { useDropzone } from 'react-dropzone'
-import { UploadFileResponse, uploadFile } from '@/lib/azureBlobStorage'
-import { useMutation } from '@tanstack/react-query'
-import { useRouter } from 'next/navigation'
+import React, { useState } from 'react';
+import { Inbox, Loader2 } from 'lucide-react';
+import { useDropzone } from 'react-dropzone';
+import { UploadFileResponse, uploadFile } from '@/lib/azureBlobStorage';
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 
-type Props = {}
+type Props = {};
 
 const FileUpload = (props: Props) => {
-  const [isUploading, setIsUploading] = useState(false)
-  const router = useRouter()
+  const [isUploading, setIsUploading] = useState(false);
+  const router = useRouter();
 
   const { mutate, isLoading, isError, isSuccess } = useMutation({
     mutationFn: async ({
       fileKey,
       fileName,
     }: {
-      fileKey: string | undefined
-      fileName: string | undefined
+      fileKey: string | undefined;
+      fileName: string | undefined;
     }) => {
       const response = await axios.post('/api/create-chat', {
         fileKey,
         fileName,
-      })
+      });
 
-      return response.data
+      return response.data;
     },
-  })
+  });
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: { 'application/pdf': ['.pdf'] },
     maxFiles: 1,
     maxSize: 10 * 1024 * 1024,
-    onDrop: async files => {
-      const file: File = files[0]
+    onDrop: async (files) => {
+      const file: File = files[0];
 
       if (!file) {
-        toast.error('File too large! Maximum allowed file size is 10Mb.')
-        return
+        toast.error('File too large! Maximum allowed file size is 10Mb.');
+        return;
       }
 
-      setIsUploading(true)
-      const response: UploadFileResponse = await uploadFile(file)
+      setIsUploading(true);
+      const response: UploadFileResponse = await uploadFile(file);
 
       if (response.status === 'ok') {
-        toast.success('File uploaded')
+        toast.success('File uploaded');
         mutate(
           {
             fileKey: response.fileKey,
@@ -56,21 +56,20 @@ const FileUpload = (props: Props) => {
           },
           {
             onSuccess: ({ chatId }) => {
-              toast.success('Chat created')
-              setTimeout(() => router.push(`/chat/${chatId}`), 5_000)
+              toast.success('Chat created');
+              setTimeout(() => router.push(`/chat/${chatId}`), 5_000);
             },
-            onError: error => {
-              toast.error(`Error creating chat: ${error}`)
+            onError: (error) => {
+              toast.error(`Error creating chat: ${error}`);
             },
           }
-        )
-        console.log('File uploaded', response)
+        );
       } else {
-        toast.error(`Something went wrong! ${response.error}`)
+        toast.error(`Something went wrong! ${response.error}`);
       }
-      setIsUploading(false)
+      setIsUploading(false);
     },
-  })
+  });
 
   return (
     <section className='p-2 bg-white rounded-xl'>
@@ -96,7 +95,7 @@ const FileUpload = (props: Props) => {
         </>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default FileUpload
+export default FileUpload;
