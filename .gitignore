@@ -8,6 +8,12 @@
 # testing
 /coverage
 
+# prettier
+.prettier*
+
+# launch
+**/launch.json
+
 # next.js
 /.next/
 /out/
