@@ -1,36 +1,38 @@
-import ChatComponent from '@/components/ChatComponent'
-import ChatSideBar from '@/components/ChatSideBar'
-import PDFViewer from '@/components/PDFViewer'
-import { db } from '@/lib/db'
-import { chats } from '@/lib/db/schema'
-import { auth } from '@clerk/nextjs'
-import { eq } from 'drizzle-orm'
-import { redirect } from 'next/navigation'
+import ChatComponent from '@/components/ChatComponent';
+import ChatSideBar from '@/components/ChatSideBar';
+import PDFViewer from '@/components/PDFViewer';
+import { db } from '@/lib/db';
+import { chats } from '@/lib/db/schema';
+import { auth } from '@clerk/nextjs/server';
+import { eq } from 'drizzle-orm';
+import { redirect } from 'next/navigation';
 
-import React from 'react'
+import React from 'react';
 
 type Props = {
   params: {
-    chatId: string
-  }
-}
+    chatId: string;
+  };
+};
 
 const ChatPage = async ({ params: { chatId } }: Props) => {
-  const { userId } = await auth()
-  if (!userId) return redirect('/sign-in')
+  const { userId } = await auth();
+  if (!userId) return redirect('/sign-in');
 
   const userChats = await db
     .select()
     .from(chats)
-    .where(eq(chats.userId, userId))
+    .where(eq(chats.userId, userId));
 
-  if (!userChats) return redirect('/')
-  if (!userChats.find(c => c.id === parseInt(chatId))) return redirect('/')
+  if (!userChats) return redirect('/');
+  if (!userChats.find((c) => c.id === parseInt(chatId))) return redirect('/');
 
-  const currentChat = userChats.find(c => c.id === parseInt(chatId))
-  const pdfURL = `https://jet-eventdata-4572.ngrok.io${currentChat?.pdfUrl
-    .substring(1)
-    .replace('/public', '')}`
+  const account = process.env.NEXT_PUBLIC_AZURE_SA_ACCOUNT_NAME || '';
+  const containerName =
+    process.env.NEXT_PUBLIC_AZURE_SA_ACCOUNT_CONTAINER_NAME || '';
+
+  const currentChat = userChats.find((c) => c.id === parseInt(chatId));
+  const pdfURL = `https://${account}.blob.core.windows.net/${containerName}/${containerName}/${currentChat.fileKey}`;
 
   return (
     <div className='flex max-h-screen overflow-hidden'>
@@ -49,7 +51,7 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
         </main>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ChatPage
+export default ChatPage;
