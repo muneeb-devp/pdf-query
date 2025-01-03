@@ -75,3 +75,20 @@ export async function POST(req: Request) {
     return new Response('failed', { status: 500 })
   }
 }
+
+export async function GET(req: Request) {
+  const { searchParams }: { searchParams: URLSearchParams } = new URL(req.url)
+  const userId: string | null = searchParams.get('userId')
+  const lastChat: { id: string }[] = await db.select()
+    .from(chats)
+    .where(
+      eq(chats.userId, userId)
+    ).orderBy(chats.createdAt, 'desc')
+    .limit(1)
+
+  if (lastChat.length !== 0) {
+    return NextResponse.redirect(`${process.env.BASE_URL}/chat/${lastChat[0].id}`)
+  }
+
+  return NextResponse.redirect(`${process.env.BASE_URL}`)
+}

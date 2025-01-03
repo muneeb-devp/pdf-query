@@ -1,13 +1,14 @@
-import Link from 'next/link'
+import Link from 'next/link';
 
-import { Button } from '@/components/ui/button'
-import { UserButton, auth } from '@clerk/nextjs'
-import { LogIn } from 'lucide-react'
-import FileUpload from '@/components/FileUpload'
+import { Button } from '@/components/ui/button';
+import { UserButton } from '@clerk/nextjs';
+import { auth } from '@clerk/nextjs/server';
+import { LogIn } from 'lucide-react';
+import FileUpload from '@/components/FileUpload';
 
 export default async function Home() {
-  const { userId } = await auth()
-  const isAuthenticated = !!userId
+  const { userId } = await auth();
+  const isAuthenticated = !!userId;
 
   return (
     <main className='w-screen min-h-screen bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-rose-400 to-orange-300'>
@@ -21,7 +22,11 @@ export default async function Home() {
           </div>
 
           <div className='flex mt-6'>
-            {isAuthenticated && <Button>Let's Chat</Button>}
+            {isAuthenticated && (
+              <Button>
+                <Link href={`/api/chat?userId=${userId}`}>Let&apos;s Chat</Link>
+              </Button>
+            )}
           </div>
 
           <p className='max-w-xl mt-1 text-lg text-slate-800'>
@@ -43,5 +48,5 @@ export default async function Home() {
         </div>
       </section>
     </main>
-  )
+  );
 }
