@@ -22,10 +22,15 @@ export const messages = pgTable('messages', {
   role: userSystemEnum('role').notNull(),
 })
 
+export const userSubscription = pgTable('user_subscription', {
+  id: serial('id').primaryKey(),
+  orderId: varchar('order_id', { length: 32 }).notNull(),
+  userId: varchar('user_id', { length: 64 }).notNull().unique(),
+  customerId: integer('customer_id').notNull(),
+  username: varchar('username', { length: 64 }).notNull(),
+  userEmail: varchar('user_email', { length: 64 }).notNull(),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+})
+
 export type DrizzleChat = typeof chats.$inferSelect
 
-// drizzle-kit provides utility functions e.g. migrations
-// To apply migrations, type in terminal
-//  bun drizzle-kit push:pg
-// To see your database tables, type in terminal
-//  bun drizzle-kit studio
