@@ -4,6 +4,10 @@ Welcome to the PDF Query Application! This application allows users to upload an
 
 ## Demo
 
+
+https://github.com/user-attachments/assets/fb610979-a62d-4200-9e36-4d104ce2e6d8
+
+
 ## Features
 
 - **PDF Upload**: Users can upload any PDF document.
@@ -48,7 +52,7 @@ npm start
 
 ## Contributing
 
-We welcome contributions! Please read our [contributing guidelines](CONTRIBUTING.md) for more information.
+Any and all contributions are welcome. :)
 
 ## License
 
