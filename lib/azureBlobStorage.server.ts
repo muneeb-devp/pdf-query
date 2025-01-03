@@ -47,7 +47,7 @@ export async function downloadFromAzureBlobStorage(
   } catch (error) {
     return {
       status: 'error',
-      error,
+      error: (error as Error).message,
     }
   }
 }

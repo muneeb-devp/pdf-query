@@ -40,6 +40,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ url: response.data.data.attributes.url }, { status: 200, statusText: 'OK' })
   } catch (error) {
     console.error(error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+    return NextResponse.json({ error: errorMessage }, { status: 500 })
   }
 }

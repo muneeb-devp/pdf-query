@@ -8,8 +8,8 @@ import { NextResponse } from 'next/server';
 interface WebhookRequestBody {
   data: {
     attributes: {
-      order_number: Number;
-      customer_id: Number;
+      order_number: number;
+      customer_id: number;
       user_name: string;
       user_email: string;
       status: string;

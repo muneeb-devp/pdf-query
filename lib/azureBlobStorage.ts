@@ -47,6 +47,6 @@ export async function uploadFile(blob: File): Promise<UploadFileResponse> {
     }
   } catch (error) {
     console.error(error)
-    return { status: 'failed', error }
+    return { status: 'failed', error: String(error) }
   }
 }
