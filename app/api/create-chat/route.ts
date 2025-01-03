@@ -2,7 +2,7 @@ import { downloadFromAzureBlobStorage } from '@/lib/azureBlobStorage.server'
 import { db } from '@/lib/db'
 import { chats } from '@/lib/db/schema'
 import { loadAzureBlobIntoPinecone } from '@/lib/pinecone'
-import { auth } from '@clerk/nextjs'
+import { auth } from '@clerk/nextjs/server'
 import { NextResponse } from 'next/server'
 
 export async function POST(req: Request, res: Response) {
