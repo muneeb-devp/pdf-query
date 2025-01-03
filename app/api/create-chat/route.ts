@@ -14,7 +14,7 @@ export async function POST(req: Request, res: Response) {
     if (!userId)
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-    console.log(fileKey, fileName)
+    //console.log(fileKey, fileName)
     await loadAzureBlobIntoPinecone(fileKey)
     const { fileName: tmpFileName } = await downloadFromAzureBlobStorage(
       fileKey
