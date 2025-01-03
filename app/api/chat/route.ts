@@ -21,9 +21,13 @@ export async function POST(req: Request) {
     if (allChats.length !== 1)
       return NextResponse.json({ error: 'chat not found' }, { status: 404 })
 
+    // Only 3 free queries in free tier
+    if (messages.filter((msg: Message) => msg.role === 'user').length > 3)
+      return NextResponse.json({ error: 'free tier limit reached' }, { status: 402, statusText: 'Payment Required' })
+
     const fileKey = allChats[0].fileKey
     const lastMessage = messages[messages.length - 1]
-    const context = await getContext(lastMessage.content, fileKey)
+    const context = await getContext(lastMessage.content, fileKey.replace(/[^\x00-\x7F]+/g, ''))
 
     const prompt = {
       role: 'system',
