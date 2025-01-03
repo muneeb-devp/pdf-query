@@ -1,10 +1,6 @@
-import md5 from 'md5'
-
 import {
   Pinecone,
-  Vector,
   PineconeRecord,
-  utils as PineconeUtils,
 } from '@pinecone-database/pinecone'
 import { downloadFromAzureBlobStorage } from './azureBlobStorage.server'
 import {
@@ -14,6 +10,7 @@ import {
 import { PDFLoader } from 'langchain/document_loaders/fs/pdf'
 import { getEmbeddings } from './embeddings'
 import { convertToASCII } from './utils'
+import md5 from 'md5'
 
 export type PDFPage = {
   pageContent: string
@@ -33,8 +30,7 @@ export const getPineConeClient = async (): Promise<Pinecone> => {
 
   if (!pinecone) {
     pinecone = new Pinecone({
-      apiKey: pineconeAPIKey,
-      environment: pineconeEnv,
+      apiKey: pineconeAPIKey
     })
   }
 
@@ -44,11 +40,11 @@ export const getPineConeClient = async (): Promise<Pinecone> => {
 export async function loadAzureBlobIntoPinecone(fileKey: string) {
   // Get the PDF
   const response = await downloadFromAzureBlobStorage(fileKey)
+  const PINECONE_INDEX = process.env.PINECONE_INDEX || ''
 
   if (!response.fileName)
     throw new Error(`Failed to download file (${fileKey}) from Azure!`)
 
-  console.log(`%c${response.fileName}`, `font-weight: bold; color: red`)
   const loader = new PDFLoader(response.fileName)
   const pages = (await loader.load()) as PDFPage[]
 
@@ -57,17 +53,12 @@ export async function loadAzureBlobIntoPinecone(fileKey: string) {
 
   // vectorize and embed individual documents
   const vectors = await Promise.all(documents.flat().map(embedDocument))
-  console.log(vectors)
   // upload to pinecone
   const client = await getPineConeClient()
-  const pineconeIndex = client.Index('pdf-query')
+  const pineconeIndex = client.Index(PINECONE_INDEX)
   const namespace = pineconeIndex.namespace(convertToASCII(fileKey))
 
-  console.log('Inserting vectors into pinecone')
-
   await namespace.upsert(vectors)
-
-  console.log('Data inserted')
 
   return documents[0]
 }
