@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# PDF Query Application
+
+Welcome to the PDF Query Application! This application allows users to upload any PDF document and interact with an AI model trained on that document. Users can ask questions, and the AI will provide responses based on the content of the uploaded PDF.
+
+## Demo
+
+## Features
+
+- **PDF Upload**: Users can upload any PDF document.
+- **AI Model Training**: The application trains an AI model on the uploaded PDF to understand its content.
+- **Contextual Responses**: Users can ask questions, and the AI will respond with answers in the context of the uploaded PDF.
+- **Authentication**: Secure authentication is supported via Clerk.
+- **Storage**: Uploaded PDFs are stored in Azure Blob Storage.
+- **Database**: Drizzle is used as the ORM, and Postgres is the database.
+- **Payments**: LemonSqueezy is integrated for handling payments.
 
 ## Getting Started
 
-First, run the development server:
+To get started with the PDF Query Application, follow these steps:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+1. **Clone the repository**:
+
+```sh
+git clone https://github.com/yourusername/pdf-query.git
+cd pdf-query
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Install dependencies**:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```sh
+npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+3. **Set up environment variables**:
+   Create a `.env` file and add the necessary environment variables for Clerk, Azure Blob Storage, Postgres, and LemonSqueezy.
 
-## Learn More
+4. **Run the application**:
 
-To learn more about Next.js, take a look at the following resources:
+```sh
+npm start
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Usage
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+1. **Upload a PDF**: Log in and upload a PDF document.
+2. **Ask Questions**: Once the AI model is trained, ask any questions related to the content of the PDF.
+3. **Receive Answers**: Get contextual answers from the AI based on the uploaded PDF.
 
-## Deploy on Vercel
+## Contributing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+We welcome contributions! Please read our [contributing guidelines](CONTRIBUTING.md) for more information.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Contact
+
+For any questions or issues, please open an issue on GitHub or contact us at muneeb.devp@gmail.com
+
+Enjoy using the PDF Query Application!
