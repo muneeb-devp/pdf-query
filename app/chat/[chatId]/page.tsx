@@ -9,13 +9,11 @@ import { redirect } from 'next/navigation';
 
 import React from 'react';
 
-type Props = {
-  params: {
-    chatId: string;
-  };
-};
-
-const ChatPage = async ({ params }: Props) => {
+const ChatPage = async ({
+  params,
+}: {
+  params: Promise<{ chatId: string }>;
+}) => {
   const { userId } = await auth();
   const { chatId } = await params;
   if (!userId) return redirect('/sign-in');
@@ -33,7 +31,9 @@ const ChatPage = async ({ params }: Props) => {
     process.env.NEXT_PUBLIC_AZURE_SA_ACCOUNT_CONTAINER_NAME || '';
 
   const currentChat = userChats.find((c) => c.id === parseInt(chatId));
-  const pdfURL = `https://${account}.blob.core.windows.net/${containerName}/${containerName}/${currentChat.fileKey}`;
+  const pdfURL = currentChat
+    ? `https://${account}.blob.core.windows.net/${containerName}/${containerName}/${currentChat.fileKey}`
+    : '';
 
   return (
     <div className='flex max-h-screen overflow-hidden'>
