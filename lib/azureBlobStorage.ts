@@ -22,7 +22,7 @@ if (!account || !SASToken || !containerName)
   throw Error('Azure storage account credentials not found!')
 
 const blobServiceClient: BlobServiceClient = new BlobServiceClient(
-  `https://${account}.blob.core.windows.net${SASToken}`
+  `https://${account}.blob.core.windows.net/${containerName}?${SASToken}`
 )
 
 const container: ContainerClient =
