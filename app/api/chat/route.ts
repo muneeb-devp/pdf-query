@@ -3,7 +3,7 @@ import { Message, OpenAIStream, StreamingTextResponse } from 'ai'
 import { getContext } from '@/lib/context'
 import { db } from '@/lib/db'
 import { chats, messages as _messages } from '@/lib/db/schema'
-import { eq } from 'drizzle-orm'
+import { eq, desc } from 'drizzle-orm'
 import { NextResponse } from 'next/server'
 
 export const runtime = 'edge'
@@ -83,11 +83,14 @@ export async function POST(req: Request) {
 export async function GET(req: Request) {
   const { searchParams }: { searchParams: URLSearchParams } = new URL(req.url)
   const userId: string | null = searchParams.get('userId')
-  const lastChat: { id: string }[] = await db.select()
+  if (!userId) {
+    return NextResponse.redirect(`${process.env.BASE_URL}`)
+  }
+  const lastChat: { id: number }[] = await db.select()
     .from(chats)
     .where(
       eq(chats.userId, userId)
-    ).orderBy(chats.createdAt, 'desc')
+    ).orderBy(desc(chats.createdAt))
     .limit(1)
 
   if (lastChat.length !== 0) {
