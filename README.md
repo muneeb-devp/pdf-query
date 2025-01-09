@@ -1,6 +1,6 @@
-# PDF Query Application
+# PDF Query
 
-Welcome to the PDF Query Application! This application allows users to upload any PDF document and interact with an AI model trained on that document. Users can ask questions, and the AI will provide responses based on the content of the uploaded PDF.
+Welcome to the PDF Query! This application allows users to upload any PDF document and interact with an AI model trained on that document. Users can ask questions, and the AI will provide responses based on the content of the uploaded PDF.
 
 ## Demo
 
@@ -25,7 +25,7 @@ To get started with the PDF Query Application, follow these steps:
 1. **Clone the repository**:
 
 ```sh
-git clone https://github.com/yourusername/pdf-query.git
+git clone https://github.com/muneeb-devp/pdf-query.git
 cd pdf-query
 ```
 
@@ -61,5 +61,3 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ## Contact
 
 For any questions or issues, please open an issue on GitHub or contact us at muneeb.devp@gmail.com
-
-Enjoy using the PDF Query Application!
